@@ -5,4 +5,9 @@ public class WidgetFactoryRed implements WidgetFactory {
     public JButton getButton(String text) {
         return new ButtonRed(text);
     }
+
+    @Override
+    public String getName() {
+        return "Red";
+    }
 }

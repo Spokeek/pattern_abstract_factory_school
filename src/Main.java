@@ -2,8 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
 
 public class Main {
 
@@ -12,25 +11,25 @@ public class Main {
         window.setSize(300, 300);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        WidgetFactory f = new WidgetFactoryRed();
+        ArrayList<WidgetFactory> list = new ArrayList<>();
+        list.add(new WidgetFactoryRed());
+        list.add(new WidgetFactoryBlue());
+        WidgetComboBoxModel m = new WidgetComboBoxModel(list);
+        JComboBox themeSelector = new JComboBox(m);
+        themeSelector.setRenderer(new ListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                return new JLabel(((WidgetFactory) value).getName());
+            }
+        });
 
-        Map<String, WidgetFactory> map = new HashMap<String, WidgetFactory>();
-        map.put("red", new WidgetFactoryRed());
-        map.put("blue", new WidgetFactoryBlue());
-
-        JComboBox themeSelector = new JComboBox();
-
-        for(Map.Entry<String, WidgetFactory> e : map.entrySet()){
-            themeSelector.addItem(e.getKey());
-        }
 
         themeSelector.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(window.getContentPane().getComponentCount() != 1)
+                if (window.getContentPane().getComponentCount() != 1)
                     window.getContentPane().remove(1);
-                String selected = themeSelector.getSelectedItem().toString();
-                WidgetFactory f = map.get(selected);
+                WidgetFactory f = m.getSelectedItem();
                 if (f != null) {
                     window.getContentPane().add(f.getButton("my awesome styled button"), BorderLayout.SOUTH);
                     window.validate();
