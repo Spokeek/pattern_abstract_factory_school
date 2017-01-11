@@ -1,0 +1,5 @@
+Design pattern : abstract factory
+
+Defined a abstract factory test to know how to implement the pattern.
+
+You have a combobox. Selecting a value in the combobox will change the Abstract Factory used and so change the button color
